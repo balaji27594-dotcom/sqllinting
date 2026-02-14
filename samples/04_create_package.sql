@@ -30,7 +30,7 @@ CREATE OR REPLACE PACKAGE hr_management AS
     );
 
     -- Procedure declarations
-    PROCEDURE hire_new_Employee(
+    PROCEDURE HIRE_NEW_EMPLOYEE(
         p_first_name IN employees.first_name % TYPE,
         p_last_name IN employees.last_name % TYPE,
         p_email IN employees.email % TYPE,
@@ -40,40 +40,40 @@ CREATE OR REPLACE PACKAGE hr_management AS
         p_employee_id OUT employees.employee_id % TYPE
     );
 
-    PROCEDURE terminate_employee(
+    PROCEDURE TERMINATE_EMPLOYEE(
         p_employee_id IN employees.employee_id % TYPE,
         p_termination_date IN DATE
     );
 
-    PROCEDURE update_salary(
+    PROCEDURE UPDATE_SALARY(
         p_employee_id IN employees.employee_id % TYPE,
         p_new_salary IN employees.salary % TYPE
     );
 
-    PROCEDURE assign_to_project(
+    PROCEDURE ASSIGN_TO_PROJECT(
         p_employee_id IN employees.employee_id % TYPE,
         p_project_id IN projects.project_id % TYPE,
         p_role IN project_assignments.role % TYPE
     );
 
     -- Function declarations
-    FUNCTION get_employee_info(
+    FUNCTION GET_EMPLOYEE_INFO(
         p_employee_id IN employees.employee_id % TYPE
     ) RETURN EMPLOYEE_RECORD;
 
-    FUNCTION get_department_summary(
+    FUNCTION GET_DEPARTMENT_SUMMARY(
         p_department_id IN departments.department_id % TYPE
     ) RETURN DEPARTMENT_SUMMARY;
 
-    FUNCTION calculate_payroll(
+    FUNCTION CALCULATE_PAYROLL(
         p_employee_id IN employees.employee_id % TYPE
     ) RETURN NUMBER;
 
-    FUNCTION is_valid_email(
+    FUNCTION IS_VALID_EMAIL(
         p_email IN VARCHAR2
     ) RETURN BOOLEAN;
 
-    FUNCTION get_all_employees RETURN EMPLOYEE_TABLE;
+    FUNCTION GET_ALL_EMPLOYEES RETURN EMPLOYEE_TABLE;
 
 END hr_management;
 
@@ -82,7 +82,7 @@ END hr_management;
 CREATE OR REPLACE PACKAGE BODY hr_management AS
 
     -- Private procedure
-    PROCEDURE log_action(
+    PROCEDURE LOG_ACTION(
         p_action IN VARCHAR2,
         p_details IN VARCHAR2
     ) AS
@@ -94,7 +94,7 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
         ) VALUES (
             p_action,
             p_details,
-            sysdate
+            SYSDATE
         );
         COMMIT;
         EXCEPTION
@@ -103,7 +103,7 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
     END log_action;
 
     -- Implementation of hire_new_employee
-    PROCEDURE hire_new_employee(
+    PROCEDURE HIRE_NEW_EMPLOYEE(
         p_first_name IN employees.first_name % TYPE,
         p_last_name IN employees.last_name % TYPE,
         p_email IN employees.email % TYPE,
@@ -114,15 +114,15 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
     ) AS
         l_next_id NUMBER;
     BEGIN
-        IF NOT is_valid_email(p_email) THEN
-            raise_application_error(-20010, 'Invalid email format');
+        IF NOT IS_VALID_EMAIL(p_email) THEN
+            RAISE_APPLICATION_ERROR(-20010, 'Invalid email format');
         END IF;
 
         IF p_salary < g_min_salary OR p_salary > g_max_salary THEN
-            raise_application_error(-20011, 'Salary out of valid range');
+            RAISE_APPLICATION_ERROR(-20011, 'Salary out of valid range');
         END IF;
 
-        SELECT max(employee_id) + 1
+        SELECT MAX(employee_id) + 1
         INTO l_next_id
         FROM employees;
 
@@ -143,31 +143,31 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
             p_job_id,
             p_salary,
             p_department_id,
-            trunc(sysdate)
+            TRUNC(SYSDATE)
         );
 
         p_employee_id := l_next_id;
-        log_action('HIRE', 'Employee ' || l_next_id || ' hired');
+        LOG_ACTION('HIRE', 'Employee ' || l_next_id || ' hired');
         COMMIT;
 
         EXCEPTION
             WHEN OTHERS THEN
                 ROLLBACK;
-                log_action('ERROR', sqlcode || ' - ' || sqlerrm);
+                LOG_ACTION('ERROR', sqlcode || ' - ' || sqlerrm);
                 RAISE;
     END hire_new_employee;
 
     -- Implementation of terminate_employee
-    PROCEDURE terminate_employee(
+    PROCEDURE TERMINATE_EMPLOYEE(
         p_employee_id IN employees.employee_id % TYPE,
         p_termination_date IN DATE
     ) AS
     BEGIN
         UPDATE employees
-        SET updated_date = current_timestamp
+        SET updated_date = CURRENT_TIMESTAMP
         WHERE employee_id = p_employee_id;
 
-        log_action('TERMINATE', 'Employee ' || p_employee_id || ' terminated');
+        LOG_ACTION('TERMINATE', 'Employee ' || p_employee_id || ' terminated');
         COMMIT;
 
         EXCEPTION
@@ -177,7 +177,7 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
     END terminate_employee;
 
     -- Implementation of update_salary
-    PROCEDURE update_salary(
+    PROCEDURE UPDATE_SALARY(
         p_employee_id IN employees.employee_id % TYPE,
         p_new_salary IN employees.salary % TYPE
     ) AS
@@ -185,10 +185,10 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
         UPDATE employees
         SET
             salary = p_new_salary,
-            updated_date = current_timestamp
+            updated_date = CURRENT_TIMESTAMP
         WHERE employee_id = p_employee_id;
 
-        log_action('SALARY_UPDATE', 'Employee ' || p_employee_id);
+        LOG_ACTION('SALARY_UPDATE', 'Employee ' || p_employee_id);
         COMMIT;
 
         EXCEPTION
@@ -198,7 +198,7 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
     END update_salary;
 
     -- Implementation of assign_to_project
-    PROCEDURE assign_to_project(
+    PROCEDURE ASSIGN_TO_PROJECT(
         p_employee_id IN employees.employee_id % TYPE,
         p_project_id IN projects.project_id % TYPE,
         p_role IN project_assignments.role % TYPE
@@ -211,14 +211,14 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
             role,
             start_date
         ) VALUES (
-            (SELECT max(assignment_id) + 1 FROM project_assignments),
+            (SELECT MAX(assignment_id) + 1 FROM project_assignments),
             p_employee_id,
             p_project_id,
             p_role,
-            trunc(sysdate)
+            TRUNC(SYSDATE)
         );
 
-        log_action('PROJECT_ASSIGN', 'Employee ' || p_employee_id);
+        LOG_ACTION('PROJECT_ASSIGN', 'Employee ' || p_employee_id);
         COMMIT;
 
         EXCEPTION
@@ -228,7 +228,7 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
     END assign_to_project;
 
     -- Implementation of get_employee_info
-    FUNCTION get_employee_info(
+    FUNCTION GET_EMPLOYEE_INFO(
         p_employee_id IN employees.employee_id % TYPE
     ) RETURN EMPLOYEE_RECORD AS
         l_employee EMPLOYEE_RECORD;
@@ -253,7 +253,7 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
     END get_employee_info;
 
     -- Implementation of get_department_summary
-    FUNCTION get_department_summary(
+    FUNCTION GET_DEPARTMENT_SUMMARY(
         p_department_id IN departments.department_id % TYPE
     ) RETURN DEPARTMENT_SUMMARY AS
         l_summary DEPARTMENT_SUMMARY;
@@ -261,10 +261,10 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
         SELECT
             p_department_id,
             d.department_name,
-            count(e.employee_id),
-            round(avg(e.salary), 2),
-            min(e.salary),
-            max(e.salary)
+            COUNT(e.employee_id),
+            ROUND(AVG(e.salary), 2),
+            MIN(e.salary),
+            MAX(e.salary)
         INTO l_summary
         FROM departments d
         LEFT JOIN employees e ON d.department_id = e.department_id
@@ -279,7 +279,7 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
     END get_department_summary;
 
     -- Implementation of calculate_payroll
-    FUNCTION calculate_payroll(
+    FUNCTION CALCULATE_PAYROLL(
         p_employee_id IN employees.employee_id % TYPE
     ) RETURN NUMBER AS
         l_salary employees.salary % TYPE;
@@ -289,7 +289,7 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
         FROM employees
         WHERE employee_id = p_employee_id;
 
-        RETURN round(l_salary / 12, 2);
+        RETURN ROUND(l_salary / 12, 2);
 
         EXCEPTION
             WHEN no_data_found THEN
@@ -297,28 +297,28 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
     END calculate_payroll;
 
     -- Implementation of is_valid_email
-    FUNCTION is_valid_email(
+    FUNCTION IS_VALID_EMAIL(
         p_email IN VARCHAR2
     ) RETURN BOOLEAN AS
     BEGIN
-        IF instr(p_email, '@') > 0
-        AND instr(p_email, '.') > instr(p_email, '@') THEN
+        IF INSTR(p_email, '@') > 0
+        AND INSTR(p_email, '.') > INSTR(p_email, '@') THEN
             RETURN TRUE;
         END IF;
         RETURN FALSE;
     END is_valid_email;
 
     -- Implementation of get_all_employees
-    FUNCTION get_all_employees RETURN EMPLOYEE_TABLE AS
+    FUNCTION GET_ALL_EMPLOYEES RETURN EMPLOYEE_TABLE AS
         l_employees EMPLOYEE_TABLE;
     BEGIN
         SELECT
-            employee_record(
+            EMPLOYEE_RECORD(
                 e.employee_id,
                 e.first_name,
                 e.last_name,
                 e.email,
-                coalesce(d.department_name, 'Unknown'),
+                COALESCE(d.department_name, 'Unknown'),
                 e.salary
             )
         BULK COLLECT INTO l_employees
@@ -330,7 +330,7 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
 
         EXCEPTION
             WHEN OTHERS THEN
-                RETURN employee_table();
+                RETURN EMPLOYEE_TABLE();
     END get_all_employees;
 
 END hr_management;
