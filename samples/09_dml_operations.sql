@@ -1,6 +1,6 @@
 -- Sample SQL: DML Operations (INSERT, UPDATE, DELETE)
 -- This file demonstrates data manipulation operations
- 
+
 -- Sample INSERT statements
 INSERT INTO departments (
     department_id,
@@ -134,12 +134,12 @@ SET
         WHERE department_id = 2
     )
 WHERE employee_id IN (
-    SELECT employee_id
-    FROM employees
-    WHERE
-        department_id = 2
-        AND salary < 80000
-);
+        SELECT employee_id
+        FROM employees
+        WHERE
+            department_id = 2
+            AND salary < 80000
+    );
 
 -- UPDATE with CASE statement
 UPDATE employees
@@ -166,9 +166,9 @@ WHERE
 -- DELETE with subquery
 DELETE FROM employees
 WHERE employee_id NOT IN (
-    SELECT DISTINCT employee_id
-    FROM project_assignments
-);
+        SELECT DISTINCT employee_id
+        FROM project_assignments
+    );
 
 -- MERGE operation
 MERGE INTO employees tgt
