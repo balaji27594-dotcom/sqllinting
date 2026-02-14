@@ -1,6 +1,6 @@
 -- Sample SQL: DML Operations (INSERT, UPDATE, DELETE)
 -- This file demonstrates data manipulation operations
-
+ 
 -- Sample INSERT statements
 INSERT INTO departments (
     department_id,

@@ -1,6 +1,6 @@
 -- Sample SQL: Create Functions
 -- This file demonstrates various function patterns
- 
+
 CREATE OR REPLACE FUNCTION get_employee_age(
     p_employee_id IN employees.employee_id % TYPE
 ) RETURN NUMBER AS

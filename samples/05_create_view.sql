@@ -1,6 +1,6 @@
 -- Sample SQL: Create Views
 -- This file demonstrates various view patterns
- 
+
 CREATE OR REPLACE VIEW employee_details_view AS
 SELECT
     e.employee_id,

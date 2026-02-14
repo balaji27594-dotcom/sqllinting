@@ -1,6 +1,6 @@
 -- Sample SQL: Create Stored Procedures
 -- This file demonstrates various procedure patterns and best practices
- 
+
 CREATE OR REPLACE PROCEDURE get_employee_details(
     p_employee_id IN employees.employee_id % TYPE,
     p_first_name OUT employees.first_name % TYPE,

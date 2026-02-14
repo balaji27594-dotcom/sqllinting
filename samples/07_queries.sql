@@ -1,6 +1,6 @@
 -- Sample SQL: SELECT Queries
 -- This file demonstrates various query patterns
- 
+
 -- Query 1: Simple SELECT with WHERE clause
 SELECT
     employee_id,

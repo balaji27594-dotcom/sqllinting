@@ -1,6 +1,6 @@
 -- Sample SQL: Create Package Specification
 -- This file demonstrates package structure and declarations
- 
+
 CREATE OR REPLACE PACKAGE hr_management AS
 
     -- Constants
