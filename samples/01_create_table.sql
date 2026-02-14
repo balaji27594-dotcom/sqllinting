@@ -2,50 +2,58 @@
 -- This file demonstrates table creation with various column types and constraints
 
 create table EMPLOYEES (
-  EMPLOYEE_ID   number primary key,
-first_name   varchar2(50)    not null,
-  last_name varchar2(50)NOT NULL,
-  email  varchar2(100)  unique,
-phone_number varchar2(20),
-hire_date  date not null,
-job_id varchar2(10) not null,
-salary number(8,2),
-commission_pct  number(2,2),
-manager_id number,
-department_id  number not null,
-created_date  timestamp default current_timestamp,
-updated_date timestamp   default current_timestamp
+    EMPLOYEE_ID number primary key,
+    FIRST_NAME varchar2(50) not null,
+    LAST_NAME varchar2(50) not null,
+    EMAIL varchar2(100) unique,
+    PHONE_NUMBER varchar2(20),
+    HIRE_DATE date not null,
+    JOB_ID varchar2(10) not null,
+    SALARY number(8, 2),
+    COMMISSION_PCT number(2, 2),
+    MANAGER_ID number,
+    DEPARTMENT_ID number not null,
+    CREATED_DATE timestamp default current_timestamp,
+    UPDATED_DATE timestamp default current_timestamp
 );
 
-CREATE TABLE departments (
-    department_id   NUMBER   PRIMARY KEY,
-    department_name VARCHAR2(100)NOT NULL,
-    manager_id NUMBER,
-    location_id   NUMBER,
-    CONSTRAINT fk_dept_manager FOREIGN KEY ( manager_id ) REFERENCES employees ( employee_id )
+create table DEPARTMENTS (
+    DEPARTMENT_ID NUMBER primary key,
+    DEPARTMENT_NAME VARCHAR2(100) not null,
+    MANAGER_ID NUMBER,
+    LOCATION_ID NUMBER,
+    constraint FK_DEPT_MANAGER foreign key (MANAGER_ID) references EMPLOYEES (
+        EMPLOYEE_ID
+    )
 );
 
-CREATE TABLE projects (
-    project_id    NUMBER PRIMARY KEY,
-    project_name VARCHAR2(200) NOT NULL,
-    description CLOB,
-    start_date DATE NOT NULL,
-    end_date   DATE,
-    budget NUMBER(12,2),
-    department_id  NUMBER,
-    status VARCHAR2(20)DEFAULT'ACTIVE',
-    CONSTRAINT fk_proj_dept FOREIGN KEY(department_id)REFERENCES departments(department_id),
-    CONSTRAINT CHK_DATES CHECK(end_date IS NULL OR end_date>=start_date)
+create table PROJECTS (
+    PROJECT_ID NUMBER primary key,
+    PROJECT_NAME VARCHAR2(200) not null,
+    DESCRIPTION CLOB,
+    START_DATE DATE not null,
+    END_DATE DATE,
+    BUDGET NUMBER(12, 2),
+    DEPARTMENT_ID NUMBER,
+    STATUS VARCHAR2(20) default 'ACTIVE',
+    constraint FK_PROJ_DEPT foreign key (
+        DEPARTMENT_ID
+    ) references DEPARTMENTS (DEPARTMENT_ID),
+    constraint CHK_DATES check (END_DATE is NULL or END_DATE >= START_DATE)
 );
 
-CREATE TABLE project_assignments (
-    assignment_id NUMBER PRIMARY KEY,
-    project_id NUMBER NOT NULL,
-    employee_id  NUMBER  NOT NULL,
-    role VARCHAR2(50),
-    start_date DATE NOT NULL,
-    end_date DATE,
-    CONSTRAINT fk_assign_project FOREIGN KEY(project_id)REFERENCES projects(project_id),
-    CONSTRAINT fk_assign_employee FOREIGN KEY(employee_id)REFERENCES employees(employee_id),
-    CONSTRAINT uk_assign UNIQUE(project_id,employee_id)
+create table PROJECT_ASSIGNMENTS (
+    ASSIGNMENT_ID NUMBER primary key,
+    PROJECT_ID NUMBER not null,
+    EMPLOYEE_ID NUMBER not null,
+    ROLE VARCHAR2(50),
+    START_DATE DATE not null,
+    END_DATE DATE,
+    constraint FK_ASSIGN_PROJECT foreign key (PROJECT_ID) references PROJECTS (
+        PROJECT_ID
+    ),
+    constraint FK_ASSIGN_EMPLOYEE foreign key (
+        EMPLOYEE_ID
+    ) references EMPLOYEES (EMPLOYEE_ID),
+    constraint UK_ASSIGN unique (PROJECT_ID, EMPLOYEE_ID)
 );
