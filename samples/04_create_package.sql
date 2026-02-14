@@ -10,6 +10,7 @@ CREATE OR REPLACE PACKAGE hr_management AS
 
     -- Type definitions
     TYPE employee_record IS RECORD (
+        
         employee_id employees.employee_id % TYPE,
         first_name employees.first_name % TYPE,
         last_name employees.last_name % TYPE,
