@@ -9,7 +9,8 @@ SELECT
     salary,
     hire_date
 FROM employees
-WHERE salary > 50000
+WHERE
+    salary > 50000
     AND hire_date > DATE '2020-01-01'
 ORDER BY salary DESC;
 
@@ -33,7 +34,11 @@ SELECT
     e.first_name,
     e.last_name,
     e.salary,
-    (SELECT COUNT(*) FROM project_assignments WHERE employee_id = e.employee_id) AS project_count,
+    (
+        SELECT COUNT(*)
+        FROM project_assignments
+        WHERE employee_id = e.employee_id
+    ) AS project_count,
     CASE
         WHEN e.salary < 50000 THEN 'Low'
         WHEN e.salary < 75000 THEN 'Medium'
@@ -41,11 +46,12 @@ SELECT
         ELSE 'Very High'
     END AS salary_level
 FROM employees e
-WHERE e.employee_id IN (
-    SELECT DISTINCT employee_id
-    FROM project_assignments
-    WHERE end_date IS NULL
-)
+WHERE
+    e.employee_id IN (
+        SELECT DISTINCT employee_id
+        FROM project_assignments
+        WHERE end_date IS NULL
+    )
 ORDER BY e.salary DESC;
 
 -- Query 4: Window functions
@@ -55,15 +61,19 @@ SELECT
     e.last_name,
     e.salary,
     d.department_name,
-    RANK() OVER (PARTITION BY e.department_id ORDER BY e.salary DESC) AS salary_rank,
+    RANK()
+        OVER (PARTITION BY e.department_id ORDER BY e.salary DESC)
+        AS salary_rank,
     ROUND(
         AVG(e.salary) OVER (PARTITION BY e.department_id),
         2
     ) AS dept_avg_salary,
-    e.salary - ROUND(AVG(e.salary) OVER (PARTITION BY e.department_id), 2) AS diff_from_avg
+    e.salary
+    - ROUND(AVG(e.salary) OVER (PARTITION BY e.department_id), 2)
+        AS diff_from_avg
 FROM employees e
-JOIN departments d ON e.department_id = d.department_id
-ORDER BY e.department_id, e.salary DESC;
+INNER JOIN departments d ON e.department_id = d.department_id
+ORDER BY e.department_id ASC, e.salary DESC;
 
 -- Query 5: CTE (Common Table Expression)
 WITH active_projects AS (
@@ -72,9 +82,11 @@ WITH active_projects AS (
         project_name,
         department_id
     FROM projects
-    WHERE status = 'ACTIVE'
+    WHERE
+        status = 'ACTIVE'
         AND end_date IS NULL
 ),
+
 project_teams AS (
     SELECT
         ap.project_id,
@@ -84,6 +96,7 @@ project_teams AS (
     LEFT JOIN project_assignments pa ON ap.project_id = pa.project_id
     GROUP BY ap.project_id, ap.project_name
 )
+
 SELECT
     pt.project_id,
     pt.project_name,
@@ -98,8 +111,8 @@ ORDER BY pt.team_size DESC;
 -- Query 6: Self-join for manager hierarchy
 SELECT
     e.employee_id,
-    e.first_name || ' ' || e.last_name AS employee_name,
     m.employee_id AS manager_id,
+    e.first_name || ' ' || e.last_name AS employee_name,
     m.first_name || ' ' || m.last_name AS manager_name
 FROM employees e
 LEFT JOIN employees m ON e.manager_id = m.employee_id
@@ -135,8 +148,10 @@ SELECT
     MAX(p.end_date) AS latest_project_end
 FROM employees e
 LEFT JOIN departments d ON e.department_id = d.department_id
-LEFT JOIN project_assignments pa ON e.employee_id = pa.employee_id
-    AND pa.end_date IS NULL
+LEFT JOIN project_assignments pa
+    ON
+        e.employee_id = pa.employee_id
+        AND pa.end_date IS NULL
 LEFT JOIN projects p ON pa.project_id = p.project_id
 GROUP BY
     e.employee_id,

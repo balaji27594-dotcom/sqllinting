@@ -44,60 +44,119 @@ INSERT INTO employees (
     hire_date
 )
 SELECT
-    employee_id_seq.NEXTVAL,
+    employee_id_seq.nextval,
     'John',
     'Doe',
     'john.doe@company.com',
     'IT001',
     85000,
-    department_id
+    departments.department_id
 FROM departments
-WHERE department_name = 'Information Technology';
+WHERE departments.department_name = 'Information Technology';
 
 -- Bulk INSERT with multiple rows
 INSERT ALL
-    INTO employees (employee_id, first_name, last_name, email, job_id, salary, department_id, hire_date)
-    VALUES (employee_id_seq.NEXTVAL, 'Jane', 'Smith', 'jane.smith@company.com', 'IT002', 95000, 2, SYSDATE)
-    INTO employees (employee_id, first_name, last_name, email, job_id, salary, department_id, hire_date)
-    VALUES (employee_id_seq.NEXTVAL, 'Mike', 'Johnson', 'mike.johnson@company.com', 'FIN001', 75000, 3, SYSDATE)
-    INTO employees (employee_id, first_name, last_name, email, job_id, salary, department_id, hire_date)
-    VALUES (employee_id_seq.NEXTVAL, 'Sarah', 'Williams', 'sarah.williams@company.com', 'HR001', 65000, 1, SYSDATE)
+INTO employees (
+    employee_id,
+    first_name,
+    last_name,
+    email,
+    job_id,
+    salary,
+    department_id,
+    hire_date
+)
+VALUES (
+    employee_id_seq.nextval,
+    'Jane',
+    'Smith',
+    'jane.smith@company.com',
+    'IT002',
+    95000,
+    2,
+    SYSDATE
+)
+INTO employees (
+    employee_id,
+    first_name,
+    last_name,
+    email,
+    job_id,
+    salary,
+    department_id,
+    hire_date
+)
+VALUES (
+    employee_id_seq.nextval,
+    'Mike',
+    'Johnson',
+    'mike.johnson@company.com',
+    'FIN001',
+    75000,
+    3,
+    SYSDATE
+)
+INTO employees (
+    employee_id,
+    first_name,
+    last_name,
+    email,
+    job_id,
+    salary,
+    department_id,
+    hire_date
+)
+VALUES (
+    employee_id_seq.nextval,
+    'Sarah',
+    'Williams',
+    'sarah.williams@company.com',
+    'HR001',
+    65000,
+    1,
+    SYSDATE
+)
 SELECT * FROM dual;
 
 -- UPDATE single table
 UPDATE employees
 SET salary = salary * 1.10
-WHERE department_id = 2
+WHERE
+    department_id = 2
     AND hire_date > DATE '2020-01-01';
 
 -- UPDATE with subquery
 UPDATE employees
-SET salary = (
-    SELECT AVG(salary) * 1.05
-    FROM employees
-    WHERE department_id = 2
-)
+SET
+    salary = (
+        SELECT AVG(salary) * 1.05
+        FROM employees
+        WHERE department_id = 2
+    )
 WHERE employee_id IN (
     SELECT employee_id
     FROM employees
-    WHERE department_id = 2
+    WHERE
+        department_id = 2
         AND salary < 80000
 );
 
 -- UPDATE with CASE statement
 UPDATE employees
-SET salary = CASE
-    WHEN salary < 50000 THEN salary * 1.15
-    WHEN salary < 75000 THEN salary * 1.10
-    WHEN salary < 100000 THEN salary * 1.05
-    ELSE salary * 1.02
-END,
-updated_date = CURRENT_TIMESTAMP
+SET
+    salary = CASE
+        WHEN salary < 50000 THEN salary * 1.15
+        WHEN salary < 75000 THEN salary * 1.10
+        WHEN salary < 100000 THEN salary * 1.05
+        ELSE salary * 1.02
+    END,
+    updated_date = CURRENT_TIMESTAMP
 WHERE hire_date > DATE '2019-01-01';
 
 -- DELETE with WHERE clause
 DELETE FROM project_assignments
-WHERE end_date < ADD_MONTHS(SYSDATE, -12)
+WHERE
+    end_date < ADD_MONTHS(SYSDATE, -12)
     AND project_id IN (
         SELECT project_id
         FROM projects
@@ -125,7 +184,7 @@ USING (
         SYSDATE AS hire_date
     FROM dual
 ) src
-ON (tgt.employee_id = src.employee_id)
+    ON (tgt.employee_id = src.employee_id)
 WHEN MATCHED THEN
     UPDATE SET
         tgt.first_name = src.first_name,
