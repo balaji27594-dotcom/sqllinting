@@ -4,21 +4,23 @@
 
 CREATE OR REPLACE PACKAGE testuser.test_pkg IS
 
-   TYPE assoc_array_varchar2_t IS TABLE OF VARCHAR2(4000) INDEX BY BINARY_INTEGER;
+    TYPE assoc_array_varchar2_t IS TABLE OF VARCHAR2(
+        4000
+    ) INDEX BY BINARY_INTEGER;
 
-   PROCEDURE your_proc(p_parm IN assoc_array_varchar2_t);
+    PROCEDURE your_proc(p_parm IN assoc_array_varchar2_t);
 
 END test_pkg;
 
 CREATE OR REPLACE PACKAGE BODY testuser.test_pkg IS
 
-   PROCEDURE your_proc(p_parm IN assoc_array_varchar2_t) AS
-   BEGIN
-      FOR i IN p_parm.first .. p_parm.last
-      LOOP
-         dbms_output.put_line(p_parm(i));
-      END LOOP;
+    PROCEDURE your_proc(p_parm IN assoc_array_varchar2_t) AS
+    BEGIN
+        FOR i IN p_parm.first..p_parm.last
+        LOOP
+            dbms_output.put_line(p_parm(i));
+        END LOOP;
 
-   END;
+    END;
 
 END test_pkg;
