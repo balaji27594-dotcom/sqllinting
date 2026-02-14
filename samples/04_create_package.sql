@@ -167,7 +167,6 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
         SET updated_date = current_timestamp
         WHERE employee_id = p_employee_id;
 
-
         log_action('TERMINATE', 'Employee ' || p_employee_id || ' terminated');
         COMMIT;
 

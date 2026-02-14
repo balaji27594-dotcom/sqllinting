@@ -10,7 +10,7 @@ indent_size = 4
 indent_size = 4
 tab_space_size = 4
 use_tabs = false
-allow_implicit_indents = true
+implicit_indents = allow
 
 [sqlfluff:rules]
 # ============================================================================
@@ -39,9 +39,6 @@ L007 = enable
 
 # L008: Operators should be surrounded by spaces (comparison)
 L008 = enable
-
-# L009: EXCLUDED - Aliasing constructions (can conflict with naming style)
-# L009 = disable
 
 # ============================================================================
 # CASE AND NAMING RULES - AUTO FIXABLE
