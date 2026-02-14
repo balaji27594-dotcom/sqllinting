@@ -47,8 +47,7 @@ L008 = enable
 # CASE AND NAMING RULES - AUTO FIXABLE
 # ============================================================================
 # L010: Reserved keywords should be uppercase
-L010:
-  select_clause_trailing_comma = forbid
+L010 = enable
 
 # L011: Aliasing constructions should be uppercase
 L011 = enable
@@ -72,9 +71,7 @@ L016 = enable
 L017 = enable
 
 # L018: Long lines (>100 characters)
-L018:
-  max_line_length = 100
-  ignore_comment_lines = true
+L018 = enable
 
 # ============================================================================
 # WHITESPACE AND FORMATTING RULES - AUTO FIXABLE
@@ -188,8 +185,7 @@ L052 = enable
 L053 = enable
 
 # L054: Query has excessive CTEs
-L054:
-  max_cte_count = 3
+L054 = enable
 
 # L055: CREATE INDEX statement style
 L055 = enable
@@ -208,42 +204,6 @@ L059 = enable
 
 # L060: Inconsistent SQL dialects
 L060 = enable
-
-[sqlfluff:rules:L003]
-# Exclude specific patterns for L003
-operator = before
-
-[sqlfluff:rules:L010]
-# Keywords case configuration
-capitalisation_policy = upper
-
-[sqlfluff:rules:L013]
-# Column reference case
-capitalisation_policy = lower
-
-[sqlfluff:rules:L014]
-# Unquoted identifiers case
-capitalisation_policy = lower
-
-[sqlfluff:rules:L019]
-# Comma whitespace configuration
-select_clause_trailing_comma = forbid
-
-[sqlfluff:rules:L038]
-# Inconsistent naming - column names
-capitalisation_policy = lower
-
-[sqlfluff:rules:L040]
-# NULL comparison style
-null_style = lower
-
-[sqlfluff:rules:L041]
-# Naming style consistency
-capitalisation_policy = lower
-
-[sqlfluff:rules:L047]
-# Column alias naming
-capitalisation_policy = lower
 
 # ============================================================================
 # DIALECT SPECIFIC SETTINGS - ORACLE
