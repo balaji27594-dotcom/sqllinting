@@ -28,7 +28,7 @@ BEGIN
         INTO p_department_name
         FROM departments d
         WHERE d.department_id = d.l_dept_id;
-    END IF;
+    END IF; 
 
     EXCEPTION
         WHEN no_data_found THEN
