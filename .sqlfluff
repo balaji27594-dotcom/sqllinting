@@ -1,0 +1,254 @@
+[sqlfluff]
+# SQL Linting Configuration for sqllinting project
+dialect = oracle
+max_line_length = 100
+indent_unit = space
+indent_size = 4
+
+[sqlfluff:indentation]
+# Indentation rules
+indent_size = 4
+tab_space_size = 4
+use_tabs = false
+allow_implicit_indents = true
+
+[sqlfluff:rules]
+# ============================================================================
+# CORE FORMATTING RULES - AUTO FIXABLE
+# ============================================================================
+# L001: Incorrect indentation
+L001 = enable
+
+# L002: Missing whitespace between tokens
+L002 = enable
+
+# L003: Unnecessary whitespace between tokens
+L003 = enable
+
+# L004: Incorrect indentation type (tabs vs spaces)
+L004 = enable
+
+# L005: Incorrect indentation size
+L005 = enable
+
+# L006: Operators should be surrounded by spaces
+L006 = enable
+
+# L007: Operators should NOT be surrounded by spaces
+L007 = enable
+
+# L008: Operators should be surrounded by spaces (comparison)
+L008 = enable
+
+# L009: EXCLUDED - Aliasing constructions (can conflict with naming style)
+# L009 = disable
+
+# ============================================================================
+# CASE AND NAMING RULES - AUTO FIXABLE
+# ============================================================================
+# L010: Reserved keywords should be uppercase
+L010:
+  select_clause_trailing_comma = forbid
+
+# L011: Aliasing constructions should be uppercase
+L011 = enable
+
+# L012: Type keywords should be uppercase
+L012 = enable
+
+# L013: Column/table references should be lowercase
+L013 = enable
+
+# L014: Unquoted identifiers should be lowercase
+L014 = enable
+
+# L015: DISTINCT keyword should be uppercase
+L015 = enable
+
+# L016: EXCEPT keyword should be uppercase
+L016 = enable
+
+# L017: Keywords should be uppercase
+L017 = enable
+
+# L018: Long lines (>100 characters)
+L018:
+  max_line_length = 100
+  ignore_comment_lines = true
+
+# ============================================================================
+# WHITESPACE AND FORMATTING RULES - AUTO FIXABLE
+# ============================================================================
+# L019: Whitespace after commas
+L019 = enable
+
+# L020: Functions should be lowercase
+L020 = enable
+
+# L021: Functions should be uppercase
+L021 = disable
+
+# L022: Unnecessary whitespace
+L022 = enable
+
+# L023: Unnecessary whitespace
+L023 = enable
+
+# L024: SQL formatting
+L024 = enable
+
+# L025: SQL formatting
+L025 = enable
+
+# ============================================================================
+# SEMANTIC AND LOGIC RULES - NOT AUTO FIXABLE (WARNINGS ONLY)
+# ============================================================================
+# L026: Undefined alias
+L026 = enable
+
+# L027: Undefined column
+L027 = enable
+
+# L028: Reference to undefined table
+L028 = enable
+
+# L029: Unused select clause
+L029 = enable
+
+# L030: Missing WHERE clause
+L030 = enable
+
+# L031: Unused using clause
+L031 = enable
+
+# L032: Implicit cast
+L032 = enable
+
+# L033: Bare functions
+L033 = enable
+
+# L034: Ordering by column position
+L034 = enable
+
+# L035: Unused select clause element
+L035 = enable
+
+# L036: NULL comparison
+L036 = enable
+
+# L037: ORDER BY items must be in SELECT
+L037 = enable
+
+# L038: Inconsistent column naming
+L038 = enable
+
+# L039: Unnecessary CAST
+L039 = enable
+
+# L040: Inconsistent NULL style
+L040 = enable
+
+# L041: Inconsistent naming style
+L041 = enable
+
+# L042: Missing whitespace around logical operators
+L042 = enable
+
+# L043: Missing whitespace after commas
+L043 = enable
+
+# L044: Inconsistent use of AND/OR
+L044 = enable
+
+# L045: Complex JOIN condition
+L045 = enable
+
+# L046: Ambiguous column reference
+L046 = enable
+
+# L047: Inconsistent column naming
+L047 = enable
+
+# L048: Unnecessary explicit cast
+L048 = enable
+
+# L049: Missing parentheses in WHERE clause
+L049 = enable
+
+# L050: Missing whitespace in function definitions
+L050 = enable
+
+# L051: Leading/trailing whitespace
+L051 = enable
+
+# L052: Inconsistent parentheses
+L052 = enable
+
+# L053: Inconsistent schema reference
+L053 = enable
+
+# L054: Query has excessive CTEs
+L054:
+  max_cte_count = 3
+
+# L055: CREATE INDEX statement style
+L055 = enable
+
+# L056: Invalid escape sequence
+L056 = enable
+
+# L057: Inconsistent syntax
+L057 = enable
+
+# L058: Unnecessary semicolon
+L058 = enable
+
+# L059: Inconsistent jinja templating
+L059 = enable
+
+# L060: Inconsistent SQL dialects
+L060 = enable
+
+[sqlfluff:rules:L003]
+# Exclude specific patterns for L003
+operator = before
+
+[sqlfluff:rules:L010]
+# Keywords case configuration
+capitalisation_policy = upper
+
+[sqlfluff:rules:L013]
+# Column reference case
+capitalisation_policy = lower
+
+[sqlfluff:rules:L014]
+# Unquoted identifiers case
+capitalisation_policy = lower
+
+[sqlfluff:rules:L019]
+# Comma whitespace configuration
+select_clause_trailing_comma = forbid
+
+[sqlfluff:rules:L038]
+# Inconsistent naming - column names
+capitalisation_policy = lower
+
+[sqlfluff:rules:L040]
+# NULL comparison style
+null_style = lower
+
+[sqlfluff:rules:L041]
+# Naming style consistency
+capitalisation_policy = lower
+
+[sqlfluff:rules:L047]
+# Column alias naming
+capitalisation_policy = lower
+
+# ============================================================================
+# DIALECT SPECIFIC SETTINGS - ORACLE
+# ============================================================================
+[sqlfluff:dialect:oracle]
+# Oracle-specific configurations
+max_line_length = 100
+indent_unit = space
