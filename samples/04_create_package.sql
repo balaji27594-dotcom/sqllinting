@@ -10,7 +10,7 @@ CREATE OR REPLACE PACKAGE hr_management AS
 
     -- Type definitions
     TYPE employee_record IS RECORD (
-        
+
         employee_id employees.employee_id % TYPE,
         first_name employees.first_name % TYPE,
         last_name employees.last_name % TYPE,
@@ -19,7 +19,7 @@ CREATE OR REPLACE PACKAGE hr_management AS
         salary employees.salary % TYPE
     );
 
-    TYPE employee_table IS TABLE OF employee_record;
+    TYPE employee_table IS TABLE OF EMPLOYEE_RECORD;
 
     TYPE department_summary IS RECORD (
         department_id departments.department_id % TYPE,
@@ -60,11 +60,11 @@ CREATE OR REPLACE PACKAGE hr_management AS
     -- Function declarations
     FUNCTION get_employee_info(
         p_employee_id IN employees.employee_id % TYPE
-    ) RETURN employee_record;
+    ) RETURN EMPLOYEE_RECORD;
 
     FUNCTION get_department_summary(
         p_department_id IN departments.department_id % TYPE
-    ) RETURN department_summary;
+    ) RETURN DEPARTMENT_SUMMARY;
 
     FUNCTION calculate_payroll(
         p_employee_id IN employees.employee_id % TYPE
@@ -74,10 +74,10 @@ CREATE OR REPLACE PACKAGE hr_management AS
         p_email IN VARCHAR2
     ) RETURN BOOLEAN;
 
-    FUNCTION get_all_employees RETURN employee_table;
+    FUNCTION get_all_employees RETURN EMPLOYEE_TABLE;
 
 END hr_management;
-/
+
 
 -- Package Body
 CREATE OR REPLACE PACKAGE BODY hr_management AS
@@ -231,8 +231,8 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
     -- Implementation of get_employee_info
     FUNCTION get_employee_info(
         p_employee_id IN employees.employee_id % TYPE
-    ) RETURN employee_record AS
-        l_employee employee_record;
+    ) RETURN EMPLOYEE_RECORD AS
+        l_employee EMPLOYEE_RECORD;
     BEGIN
         SELECT
             e.employee_id,
@@ -256,8 +256,8 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
     -- Implementation of get_department_summary
     FUNCTION get_department_summary(
         p_department_id IN departments.department_id % TYPE
-    ) RETURN department_summary AS
-        l_summary department_summary;
+    ) RETURN DEPARTMENT_SUMMARY AS
+        l_summary DEPARTMENT_SUMMARY;
     BEGIN
         SELECT
             p_department_id,
@@ -310,8 +310,8 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
     END is_valid_email;
 
     -- Implementation of get_all_employees
-    FUNCTION get_all_employees RETURN employee_table AS
-        l_employees employee_table;
+    FUNCTION get_all_employees RETURN EMPLOYEE_TABLE AS
+        l_employees EMPLOYEE_TABLE;
     BEGIN
         SELECT
             employee_record(
@@ -335,4 +335,3 @@ CREATE OR REPLACE PACKAGE BODY hr_management AS
     END get_all_employees;
 
 END hr_management;
-/
