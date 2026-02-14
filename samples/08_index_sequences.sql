@@ -1,6 +1,6 @@
 -- Sample SQL: Indexes and Sequences
 -- This file demonstrates index and sequence creation
-
+ 
 -- Create Sequences
 CREATE SEQUENCE employee_id_seq
 START WITH 1

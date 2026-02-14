@@ -1,6 +1,6 @@
 -- Sample SQL: Create Tables
 -- This file demonstrates table creation with various column types and constraints
-
+ 
 CREATE TABLE employees (
     employee_id NUMBER PRIMARY KEY,
     first_name VARCHAR2(50) NOT NULL,

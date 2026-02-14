@@ -1,6 +1,6 @@
 -- Sample SQL: Create Triggers
 -- This file demonstrates various trigger patterns
-
+ 
 CREATE OR REPLACE TRIGGER employees_before_insert
 BEFORE INSERT ON employees
 FOR EACH ROW
