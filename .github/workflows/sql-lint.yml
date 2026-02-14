@@ -34,7 +34,10 @@ jobs:
       - name: Install SQL linting tools
         run: |
           pip install --upgrade pip
-          pip install sqlfluff
+          pip install --upgrade sqlfluff
+      
+      - name: Display sqlfluff version
+        run: sqlfluff version
       
       - name: Get changed SQL files
         id: changed-files
@@ -54,7 +57,13 @@ jobs:
         if: steps.changed-files.outputs.files != ''
         continue-on-error: true
         run: |
-          sqlfluff fix --dialect oracle ${{ steps.changed-files.outputs.files }} --force
+          sqlfluff fix --dialect oracle ${{ steps.changed-files.outputs.files }} --force --nocolor
+      
+      - name: Lint changed SQL files
+        if: steps.changed-files.outputs.files != ''
+        continue-on-error: true
+        run: |
+          sqlfluff lint --dialect oracle ${{ steps.changed-files.outputs.files }} --nocolor
       
       - name: Check for changes
         id: verify-changes
