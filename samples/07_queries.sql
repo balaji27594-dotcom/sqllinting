@@ -14,19 +14,19 @@ WHERE
     AND hire_date > DATE '2020-01-01'
 ORDER BY salary DESC;
 
--- Query 2: JOIN with aggregate functions
-SELECT
+-- Query 2: JOIN with aggregate functions - IMPROPER CASING
+select
     d.department_id,
-    d.department_name,
-    COUNT(e.employee_id) AS employee_count,
-    ROUND(AVG(e.salary), 2) AS avg_salary,
-    MIN(e.salary) AS min_salary,
-    MAX(e.salary) AS max_salary
-FROM departments d
-LEFT JOIN employees e ON d.department_id = e.department_id
-GROUP BY d.department_id, d.department_name
-HAVING COUNT(e.employee_id) > 0
-ORDER BY avg_salary DESC;
+    d.DEPARTMENT_NAME,
+    count(e.employee_id)   as employee_count,
+    round(avg(e.salary),2)as avg_salary,
+    min(e.salary)  as  min_salary,
+    max(e.SALARY)as max_salary
+from departments d
+left   join employees e ON d.department_id=e.department_id
+group by d.department_id,d.department_name
+having count(e.employee_id)>0
+order by avg_salary desc;
 
 -- Query 3: Subquery with CASE statement
 SELECT

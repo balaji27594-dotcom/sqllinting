@@ -1,11 +1,11 @@
 -- Sample SQL: Create Views
 -- This file demonstrates various view patterns
 
-CREATE OR REPLACE VIEW employee_details_view AS
-SELECT
+create or replace view employee_details_view as
+select
     e.employee_id,
     e.first_name,
-    e.last_name,
+ e.last_name,
     e.email,
     e.phone_number,
     e.hire_date,
@@ -14,22 +14,22 @@ SELECT
     e.commission_pct,
     d.department_id,
     d.department_name,
-    TRUNC(MONTHS_BETWEEN(SYSDATE, e.hire_date) / 12) AS years_employed
-FROM employees e
-INNER JOIN departments d ON e.department_id = d.department_id;
+    trunc(months_between(sysdate,e.hire_date)/12)as years_employed
+from employees e
+join departments d on e.department_id=d.department_id;
 
-CREATE OR REPLACE VIEW department_statistics_view AS
-SELECT
+create or replace view department_statistics_view as
+select
     d.department_id,
     d.department_name,
-    COUNT(e.employee_id) AS total_employees,
-    ROUND(AVG(e.salary), 2) AS avg_salary,
-    MIN(e.salary) AS min_salary,
-    MAX(e.salary) AS max_salary,
-    ROUND(SUM(e.salary), 2) AS total_payroll
-FROM departments d
-LEFT JOIN employees e ON d.department_id = e.department_id
-GROUP BY d.department_id, d.department_name;
+    count(e.employee_id)as total_employees,
+    round(avg(e.salary),2)as avg_salary,
+    min(e.salary)as  min_salary,
+    max(e.salary)as max_salary,
+    round(sum(e.salary),2)as total_payroll
+from departments d
+left join employees e on d.department_id=e.department_id
+group by d.department_id,d.department_name;
 
 CREATE OR REPLACE VIEW project_status_view AS
 SELECT
