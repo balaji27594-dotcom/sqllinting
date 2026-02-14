@@ -5,7 +5,7 @@ CREATE OR REPLACE PROCEDURE get_employee_details(
     p_employee_id IN employees.employee_id % TYPE,
     p_first_name OUT employees.first_name % TYPE,
     p_last_name OUT employees.last_name % TYPE,
-    p_salary OUT employees.salary % TYPE,
+    p_salary OUT employees.salary % TYPE,a
     p_department_name OUT departments.department_name % TYPE
 ) AS
     l_dept_id employees.department_id % TYPE;
