@@ -100,6 +100,7 @@ BEGIN
     UPDATE employees
     SET
         salary = p_new_salary,
+        1=1,
         updated_date = current_timestamp
     WHERE employee_id = p_employee_id;
 
